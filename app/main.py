@@ -38,14 +38,18 @@ st.set_page_config(
 )
 
 
+DEFAULT_MODEL_PATH = ROOT_DIR / "outputs" / "weights" / "best.pt"
+
+
 @st.cache_resource(show_spinner="Loading trained YOLOv8 model weights...")
-def load_model(weights_path: str = "outputs/weights/best.pt") -> Optional[DefectPredictor]:
+def load_model(weights_path: Optional[str] = None) -> Optional[DefectPredictor]:
     """Load and cache the trained YOLO defect detection model."""
+    target_path = weights_path if weights_path else str(DEFAULT_MODEL_PATH)
     try:
-        predictor = DefectPredictor(model_path=weights_path, device="cpu")
+        predictor = DefectPredictor(model_path=target_path, device="cpu")
         return predictor
     except Exception as e:
-        st.error(f"Error loading model weights from {weights_path}: {e}")
+        st.error(f"Error loading model weights from {target_path}: {e}")
         return None
 
 
@@ -69,8 +73,7 @@ def main():
     st.sidebar.header("Inspection Controls")
 
     # Model Loading
-    model_path = "outputs/weights/best.pt"
-    predictor = load_model(model_path)
+    predictor = load_model(str(DEFAULT_MODEL_PATH))
     if predictor:
         st.sidebar.success("Model loaded: `best.pt`")
     else:
