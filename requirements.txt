@@ -10,6 +10,7 @@ pandas
 # Visualization & Reporting
 matplotlib
 seaborn
+altair==4.2.2
 
 # Machine Learning Utilities & Metrics
 scikit-learn
