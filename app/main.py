@@ -151,18 +151,31 @@ def main():
         col1, col2 = st.columns(2)
         with col1:
             st.subheader("Input Image")
-            st.image(input_image, caption=f"Original: {image_label}", use_container_width=True)
+            try:
+                st.image(input_image, caption=f"Original: {image_label}", width="stretch")
+            except TypeError:
+                st.image(input_image, caption=f"Original: {image_label}", use_column_width=True)
 
         with col2:
             st.subheader("YOLO Detection Result")
             if annotated_image is not None:
-                st.image(
-                    annotated_image,
-                    caption=f"Predictions: {len(detections)} defect(s) localized with bounding boxes",
-                    use_container_width=True,
-                )
+                try:
+                    st.image(
+                        annotated_image,
+                        caption=f"Predictions: {len(detections)} defect(s) localized with bounding boxes",
+                        width="stretch",
+                    )
+                except TypeError:
+                    st.image(
+                        annotated_image,
+                        caption=f"Predictions: {len(detections)} defect(s) localized with bounding boxes",
+                        use_column_width=True,
+                    )
             else:
-                st.image(input_image, caption="No detections to display", use_container_width=True)
+                try:
+                    st.image(input_image, caption="No detections to display", width="stretch")
+                except TypeError:
+                    st.image(input_image, caption="No detections to display", use_column_width=True)
 
         # 3. Detection Details Table & Metrics
         st.markdown("### Detection Details")
