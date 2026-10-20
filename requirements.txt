@@ -15,7 +15,7 @@ seaborn
 scikit-learn
 
 # Image Processing
-opencv-python
+opencv-python-headless
 Pillow
 
 # Web Application & Deployment
