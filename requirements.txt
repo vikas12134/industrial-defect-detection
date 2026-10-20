@@ -14,8 +14,8 @@ seaborn
 # Machine Learning Utilities & Metrics
 scikit-learn
 
-# Image Processing
-opencv-python-headless
+# Image Processing & Computer Vision
+opencv-python-headless>=4.8.0
 Pillow
 
 # Web Application & Deployment
