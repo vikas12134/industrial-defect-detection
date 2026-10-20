@@ -1,0 +1,33 @@
+# Deep Learning Framework
+torch
+torchvision
+ultralytics
+
+# Numerical & Data Processing
+numpy
+pandas
+
+# Visualization & Reporting
+matplotlib
+seaborn
+
+# Machine Learning Utilities & Metrics
+scikit-learn
+
+# Image Processing
+opencv-python
+Pillow
+
+# Web Application & Deployment
+streamlit
+fastapi
+uvicorn
+python-multipart
+requests
+
+# Configuration & Utilities
+python-dotenv
+tqdm
+
+# Edge & Model Export
+onnx

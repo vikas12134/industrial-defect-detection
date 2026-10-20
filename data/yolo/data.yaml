@@ -1,0 +1,14 @@
+path: D:/industrial-defect-detection_DL/data/yolo
+
+train: images/train
+val: images/val
+
+nc: 6
+
+names:
+  - crazing
+  - inclusion
+  - patches
+  - pitted_surface
+  - rolled-in_scale
+  - scratches

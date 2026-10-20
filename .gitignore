@@ -1,0 +1,100 @@
+# ==========================================
+# Python Bytecode & Cache
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+*.egg
+*.cache
+
+# ==========================================
+# Virtual Environments
+# ==========================================
+venv/
+.venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# ==========================================
+# Environment Variables & Secrets
+# ==========================================
+.env
+.env.*
+!.env.example
+
+# ==========================================
+# Large Datasets
+# ==========================================
+# Raw and processed datasets (50+ MB)
+data/raw/
+data/processed/
+data/splits/*
+!data/splits/.gitkeep
+
+# Exclude bulk training dataset to keep repository compact
+data/yolo/images/train/
+data/yolo/labels/train/
+
+# Retain validation sample images and dataset config for UI demonstration
+!data/yolo/images/val/
+!data/yolo/data.yaml
+
+# Archives
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+
+# ==========================================
+# Models & Weights
+# ==========================================
+# Base pretrained YOLO weights and exports
+yolov8n.pt
+*.onnx
+outputs/models/
+outputs/train_yolo/weights/
+
+# Retain fine-tuned production weights for the portfolio (6.45 MB)
+!outputs/weights/best.pt
+!outputs/weights/.gitkeep
+
+# ==========================================
+# Generated Outputs & Temporary Files
+# ==========================================
+outputs/predictions/*
+!outputs/predictions/.gitkeep
+outputs/train_yolo/
+outputs/val_yolo/
+outputs/evaluation/val_artifacts/
+runs/
+wandb/
+.tensorboard/
+
+# ==========================================
+# Logs & Streamlit Cache
+# ==========================================
+*.log
+.streamlit/
+.pytest_cache/
+.coverage
+htmlcov/
+.ipynb_checkpoints/
+
+# ==========================================
+# IDEs & Operating System Files
+# ==========================================
+.vscode/
+.idea/
+*.sublime-*
+.DS_Store
+Thumbs.db
+desktop.ini

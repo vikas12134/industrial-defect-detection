@@ -1,0 +1,50 @@
+version: "3.8"
+
+services:
+  # 1. FastAPI Inference Microservice
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: defect-detection-api
+    ports:
+      - "8000:8000"
+    environment:
+      - MODEL_PATH=outputs/weights/best.pt
+      - DEVICE=cpu
+      - API_HOST=0.0.0.0
+      - API_PORT=8000
+      - DEFAULT_CONFIDENCE=0.25
+      - DEFAULT_IMGSZ=224
+      - MAX_IMAGE_SIZE_MB=15
+    volumes:
+      - ./outputs/predictions:/workspace/outputs/predictions
+      - ./outputs/weights:/workspace/outputs/weights:ro
+    command: ["uvicorn", "src.api:app", "--host", "0.0.0.0", "--port", "8000"]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+
+  # 2. Streamlit Quality Inspection Dashboard
+  ui:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: defect-detection-ui
+    ports:
+      - "8501:8501"
+    environment:
+      - API_URL=http://api:8000
+      - DEFAULT_CONFIDENCE=0.25
+      - DEFAULT_IMGSZ=224
+    volumes:
+      - ./outputs/predictions:/workspace/outputs/predictions
+    depends_on:
+      api:
+        condition: service_healthy
+    command: ["streamlit", "run", "app/main.py", "--server.port=8501", "--server.address=0.0.0.0"]
+    restart: unless-stopped
