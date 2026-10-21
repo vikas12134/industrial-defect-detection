@@ -9,7 +9,6 @@ import sys
 from pathlib import Path
 from typing import List, Optional
 
-import pandas as pd
 from PIL import Image
 import streamlit as st
 
@@ -151,59 +150,53 @@ def main():
         col1, col2 = st.columns(2)
         with col1:
             st.subheader("Input Image")
-            try:
-                st.image(input_image, caption=f"Original: {image_label}", width="stretch")
-            except TypeError:
-                st.image(input_image, caption=f"Original: {image_label}", use_column_width=True)
+            st.image(input_image, caption=f"Original: {image_label}")
 
         with col2:
             st.subheader("YOLO Detection Result")
             if annotated_image is not None:
-                try:
-                    st.image(
-                        annotated_image,
-                        caption=f"Predictions: {len(detections)} defect(s) localized with bounding boxes",
-                        width="stretch",
-                    )
-                except TypeError:
-                    st.image(
-                        annotated_image,
-                        caption=f"Predictions: {len(detections)} defect(s) localized with bounding boxes",
-                        use_column_width=True,
-                    )
+                st.image(
+                    annotated_image,
+                    caption=f"Predictions: {len(detections)} defect(s) localized with bounding boxes",
+                )
             else:
-                try:
-                    st.image(input_image, caption="No detections to display", width="stretch")
-                except TypeError:
-                    st.image(input_image, caption="No detections to display", use_column_width=True)
+                st.image(input_image, caption="No detections to display")
 
         # 3. Detection Details Table & Metrics
-        st.markdown("### Detection Details")
+        st.subheader("Detection Details")
         if detections:
             metric_col1, metric_col2, metric_col3 = st.columns(3)
             with metric_col1:
-                st.metric("Total Defect Instances", len(detections))
+                st.metric("Total Defect Instances", int(len(detections)))
             with metric_col2:
-                st.metric("Unique Defect Classes", len(set(d["class_name"] for d in detections)))
+                st.metric("Unique Defect Classes", int(len(set(str(d.get("class_name", "")) for d in detections))))
             with metric_col3:
-                max_conf = max(d["confidence"] for d in detections)
+                max_conf = float(max((float(d.get("confidence", 0.0)) for d in detections), default=0.0))
                 st.metric("Highest Confidence", f"{max_conf * 100:.1f}%")
 
-            # Formatted Data Table displaying class, confidence, and bounding box
-            table_data = []
-            for idx, d in enumerate(detections, start=1):
-                table_data.append({
-                    "Defect #": idx,
-                    "Class": d["class_name"],
-                    "Confidence": f"{d['confidence'] * 100:.1f}%",
-                    "Confidence Score": round(d["confidence"], 4),
-                    "Bounding Box [xmin, ymin, xmax, ymax]": str(d["bbox_xyxy"]),
-                    "Width (px)": d.get("width", round(d["bbox_xyxy"][2] - d["bbox_xyxy"][0], 1)),
-                    "Height (px)": d.get("height", round(d["bbox_xyxy"][3] - d["bbox_xyxy"][1], 1)),
-                })
-            st.dataframe(pd.DataFrame(table_data), use_container_width=True)
+            for i, detection in enumerate(detections, 1):
+                defect_num = int(i)
+                class_name = str(detection.get("class_name", "Unknown"))
+                confidence = float(detection.get("confidence", 0.0))
+                try:
+                    raw_bbox = detection.get("bbox_xyxy", [])
+                    if raw_bbox:
+                        bbox = [float(x) for x in raw_bbox]
+                        bbox_str = str(bbox)
+                    else:
+                        bbox_str = "Unavailable"
+                except Exception:
+                    bbox_str = "Unavailable"
+
+                detection_text = (
+                    f"**Defect {defect_num}**  \n"
+                    f"Class: {class_name}  \n"
+                    f"Confidence: {confidence:.1%}  \n"
+                    f"Bounding Box: {bbox_str}"
+                )
+                st.markdown(detection_text)
         else:
-            st.info("No defect detected. All quality inspection criteria satisfied at the current confidence threshold.")
+            st.info("No defects detected.")
 
     else:
         st.info("👆 Please upload an image above or select a sample image from the sidebar to inspect.")
