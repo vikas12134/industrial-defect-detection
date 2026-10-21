@@ -1,82 +1,74 @@
-# Industrial Surface Defect Detection using YOLOv8
+# Industrial Defect Detection
 
-## 📌 Description
-An end-to-end computer vision project that automates visual quality inspection and defect localization on industrial metal surfaces using a custom-trained **YOLOv8** deep learning model. The system accurately identifies, classifies, and draws bounding boxes around surface defects in real-time through an interactive Streamlit web application.
+## Overview
+This project uses a YOLO-based computer vision model to detect and localize industrial surface defects in images using bounding boxes and confidence scores. It provides an automated, visual quality inspection workflow through an interactive web interface.
 
----
+## Features
+- Industrial defect detection
+- YOLO object detection
+- Bounding-box localization
+- Confidence scores
+- Defect class identification
+- Streamlit web interface
+- Sample image testing
 
-## ✨ Key Features
-- **Real-Time Defect Detection**: Localizes and classifies surface flaws with high accuracy.
-- **Side-by-Side Visualization**: Displays original component images alongside AI-annotated predictions.
-- **Configurable Confidence**: Interactive threshold slider for real-time sensitivity tuning.
-- **Detailed Inspection Table**: Reports defect class, confidence score, and bounding-box coordinates for each detected instance.
-- **Clear Pass/Fail Indicators**: Prominently displays *"No defect detected"* when the component passes quality inspection.
+## Tech Stack
+- **Language**: Python
+- **Model**: YOLO (Ultralytics / PyTorch)
+- **Computer Vision**: OpenCV, Pillow
+- **Web Interface**: Streamlit
 
----
+## How It Works
+Image → YOLO model → defect detection → bounding boxes/confidence → Streamlit results
 
-## 🏷️ Detected Defect Classes
-1. **`crazing`**: Network of fine surface cracks and micro-fissures
-2. **`inclusion`**: Non-metallic embedded particles or impurities
-3. **`patches`**: Localized surface irregularities and discoloration
-4. **`pitted_surface`**: Small cavities, indentations, or erosion pits
-5. **`rolled-in_scale`**: Oxidized mill scale rolled into sheet metal
-6. **`scratches`**: Linear abrasive scratches or mechanical grooves
+1. **Input**: A component surface image is uploaded or selected from built-in sample images.
+2. **Inference**: The custom-trained YOLO model inspects the image.
+3. **Detection**: Defect instances are identified with bounding box coordinates and confidence levels.
+4. **Display**: Streamlit displays the annotated detection image, overall metrics, and individual defect details.
 
----
-
-## 🛠️ Technologies Used
-- **Deep Learning**: YOLOv8 (Ultralytics), PyTorch
-- **Computer Vision & Image Processing**: OpenCV, Pillow
-- **Data Analysis**: NumPy, Pandas
-- **Web Framework**: Streamlit
-- **Language**: Python 3.10+
-
----
-
-## 📁 Project Structure
+## Project Structure
 ```text
-industrial-defect-detection_DL/
+industrial-defect-detection/
 ├── app/
-│   └── main.py              # Streamlit web application
+│   └── main.py          # Streamlit web application
 ├── data/
-│   └── yolo/                # Dataset (train/val images, labels, data.yaml)
+│   └── yolo/            # Dataset images and labels
 ├── outputs/
-│   ├── weights/
-│   │   └── best.pt          # Trained YOLOv8 model weights
-│   └── plots/               # Training curves & confusion matrices
+│   └── weights/
+│       └── best.pt      # Trained YOLO model weights
 ├── src/
-│   ├── predict.py           # Inference & evaluation engine
-│   └── train.py             # Model training script
-├── requirements.txt         # Project dependencies
-└── README.md                # Project documentation
+│   ├── predict.py       # Inference and prediction engine
+│   └── train.py         # YOLO training script
+├── requirements.txt     # Python dependencies
+└── README.md            # Project documentation
 ```
 
----
+## Run Locally
 
-## 📦 Installation
 ```bash
-# 1. Clone the repository
-git clone https://github.com/your-username/industrial-defect-detection_DL.git
-cd industrial-defect-detection_DL
+# Clone the repository
+git clone https://github.com/vikas12134/industrial-defect-detection.git
+cd industrial-defect-detection
 
-# 2. Install required dependencies
+# Install dependencies
 pip install -r requirements.txt
-```
 
----
-
-## 🚀 How to Run
-```bash
+# Start the Streamlit application
 streamlit run app/main.py
 ```
-Open your browser at `http://localhost:8501` to start inspecting component surface images.
 
----
+## Live Demo
+Access the deployed Streamlit application here:  
+👉 [Live Demo](https://industrial-defect-detection-4vmwlqdoxee8e6pr6v6tqm.streamlit.app/)
 
-## 📊 Example Detection Result
-- **Sample Image**: `patches_1.jpg`
-- **Inspection Status**: ⚠️ Defects Detected
-- **Total Defect Count**: 3 instances
-- **Detected Class**: `patches`
-- **Highest Confidence**: **91.6%** (`0.9158`)
-- **Bounding Box Coordinates**: `[47.16, 11.21, 107.61, 94.22]`
+## Results
+The application performs real-time inspection and displays:
+- Total detected defect instances
+- Unique defect classes
+- Highest confidence
+- Individual defect class
+- Confidence percentage
+- Bounding box coordinates (`[xmin, ymin, xmax, ymax]`)
+
+## GitHub
+- Repository: [https://github.com/vikas12134/industrial-defect-detection](https://github.com/vikas12134/industrial-defect-detection)
